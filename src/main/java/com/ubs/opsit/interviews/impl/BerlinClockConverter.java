@@ -1,4 +1,4 @@
-package com.ubs.opsit.interviews.base;
+package com.ubs.opsit.interviews.impl;
 
 import com.ubs.opsit.interviews.TimeConverter;
 
@@ -11,9 +11,15 @@ public class BerlinClockConverter implements TimeConverter {
     private static final String TIME_SEPARATOR = ":";
 
     public String convertTime(String aTime) {
-        StringBuilder builder = new StringBuilder();
-
+        if(aTime == null) {
+            throw new IllegalArgumentException("Time shouldn't be null");
+        }
         int[] array = Stream.of(aTime.split(TIME_SEPARATOR)).mapToInt(s -> Integer.parseInt(s)).toArray();
+        if(array.length != 3) {
+            throw new IllegalArgumentException("Time should include hours, minutes and seconds");
+        }
+
+        StringBuilder builder = new StringBuilder();
         yellowLamp(builder, array[2]);
         fistHoursRow(builder, array[0]);
         secondHoursRow(builder, array[0]);
